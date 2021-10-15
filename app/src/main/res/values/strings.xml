@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">BodegApp</string>
+    <string name="codigo">código</string>
+    <string name="buscar">BUSCAR</string>
+    <string name="producto">PRODUCTO</string>
+    <string name="serial">SERIAL</string>
+    <string name="pallet">PALLET</string>
+    <string-array name="modos">
+        <item>"UBICACIÓN"</item>
+        <item>"DETALLE"</item>
+    </string-array>
+</resources>

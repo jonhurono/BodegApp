@@ -1,0 +1,13 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="@style/spinnerItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:gravity="center_vertical"
+    android:textSize="35sp"
+    android:textColor="@color/naranjoOscuro"
+    android:ellipsize="marquee"
+    android:background="@color/burdeo"
+    android:singleLine="true"
+
+    />
