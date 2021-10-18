@@ -5,6 +5,7 @@
     <string name="producto">PRODUCTO</string>
     <string name="serial">SERIAL</string>
     <string name="pallet">PALLET</string>
+    <string name="ubicacion">UBICACIÓN</string>
     <string-array name="modos">
         <item>"UBICACIÓN"</item>
         <item>"DETALLE"</item>

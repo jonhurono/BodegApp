@@ -56,28 +56,44 @@
             android:id="@+id/btn_prod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.33"
+            android:layout_weight="0.16"
             android:scaleX="1.1"
             android:scaleY="1.1"
             android:text="@string/producto"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:visibility="invisible"
+            tools:visibility="gone" />
+
+        <RadioButton
+            android:id="@+id/btn_ubi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.16"
+            android:scaleX="1.1"
+            android:scaleY="1.1"
+            android:text="@string/ubicacion"
+            android:textSize="30sp"
+            android:visibility="invisible"
+            tools:visibility="gone" />
 
     </RadioGroup>
 
     <TableRow
+        android:id="@+id/filita"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/radioGroup">
 
         <EditText
-            android:id="@+id/input"
+            android:id="@+id/inputCod"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"
             android:layout_weight="0.5"
             android:gravity="center"
             android:hint="@string/codigo"
+            android:textStyle="italic"
             android:inputType="number"
             android:textSize="35sp"
             tools:ignore="TextContrastCheck" />
@@ -92,5 +108,18 @@
             android:text="@string/buscar"
             android:textSize="30sp" />
     </TableRow>
+
+    <TextView
+        android:id="@+id/result1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="50sp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="resultado"
+        app:layout_constraintTop_toBottomOf="@id/filita"
+        tools:layout_editor_absoluteX="167dp"
+        tools:layout_editor_absoluteY="342dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
