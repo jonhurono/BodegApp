@@ -6,6 +6,13 @@
     <string name="serial">SERIAL</string>
     <string name="pallet">PALLET</string>
     <string name="ubicacion">UBICACIÓN</string>
+    <string name="despachar">Despachar</string>
+    <string name="nueva_ubicacion">Nueva Ubicación</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="profundidad">Profundidad</string>
+    <string name="altura">Altura</string>
+    <string name="rack">Rack</string>
+    <string name="bodega">Bodega</string>
     <string-array name="modos">
         <item>"UBICACIÓN"</item>
         <item>"DETALLE"</item>

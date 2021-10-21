@@ -3,11 +3,14 @@ package com.johnchaves.bodegapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,6 +19,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +35,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     RadioGroup  radioGroup;
     RadioButton btnPallet, btnSerial, btnProducto, btnUbic;
     EditText    inputCod;
-    Button      btnSubmit;
+    Button      btnSubmit, btnNuevaUbi, btnDespacho;
     TextView    result1;
+    TableRow    filita2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +53,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         inputCod    = (EditText) findViewById(R.id.inputCod);
         btnSubmit   = (Button) findViewById(R.id.button);
         result1     = (TextView) findViewById(R.id.result1);
-
-
+        filita2     = (TableRow) findViewById(R.id.filita2);
+        btnNuevaUbi = (Button) findViewById(R.id.btnNuevaUbi);
+        btnDespacho = (Button) findViewById(R.id.btnDespachar);
         Modo.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
         ArrayAdapter aa = new ArrayAdapter(this, R.layout.spinner_item,modos);
         aa.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -76,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-                // TODO Auto-generated method stub
+                // DO_NOTHING();
             }
         });
 
@@ -104,6 +110,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
             }
         );
+
+        btnNuevaUbi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), NuevaUbiPop.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -138,7 +152,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             conexion= DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.0.11;databaseName=Bodega;user=Movil;password=Mv2021;");
 
         }catch(Exception e){
-            Toast.makeText(getApplicationContext(),"SIN CONEXIÓN A BASE DE DATOS",Toast.LENGTH_SHORT).show();
+            Toast toast = Toast.makeText(getApplicationContext(),"SIN CONEXIÓN A BASE DE DATOS",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER,0,0);
+            toast.show();
         }
         return conexion;
     }
@@ -153,14 +169,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (rs.next()) {
                     result1.setText(rs.getString(1));
+                    filita2.setVisibility(View.VISIBLE);
                 } else {
-                    Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_SHORT).show();
+                    result1.setText(null);
+                    Toast toast = Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER,250,0);
+                    toast.show();
+                    filita2.setVisibility(View.INVISIBLE);
                 }
                 inputCod.setText("");
                 inputCod.requestFocus();
 
             } catch (Exception e) {
                 //Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                filita2.setVisibility(View.INVISIBLE);
             }
             inputCod.setText("");
             inputCod.requestFocus();
@@ -173,14 +195,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (rs.next()) {
                     result1.setText(rs.getString(1));
+                    filita2.setVisibility(View.VISIBLE);
                 } else {
-                    Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_SHORT).show();
+                    result1.setText(null);
+                    Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_LONG).show();
+                    filita2.setVisibility(View.INVISIBLE);
+
                 }
                 inputCod.setText("");
                 inputCod.requestFocus();
 
             } catch (Exception e) {
                 //Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                filita2.setVisibility(View.INVISIBLE);
             }
             inputCod.setText("");
             inputCod.requestFocus();
@@ -193,14 +220,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (rs.next()) {
                     result1.setText(rs.getString(1));
+                    filita2.setVisibility(View.VISIBLE);
                 } else {
-                    Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_SHORT).show();
+                    result1.setText(null);
+                    Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_LONG).show();
+                    filita2.setVisibility(View.INVISIBLE);
                 }
                 inputCod.setText("");
                 inputCod.requestFocus();
 
             } catch (Exception e) {
                 //Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                filita2.setVisibility(View.INVISIBLE);
             }
             inputCod.setText("");
             inputCod.requestFocus();

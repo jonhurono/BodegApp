@@ -60,9 +60,7 @@
             android:scaleX="1.1"
             android:scaleY="1.1"
             android:text="@string/producto"
-            android:textSize="30sp"
-            android:visibility="invisible"
-            tools:visibility="gone" />
+            android:textSize="30sp" />
 
         <RadioButton
             android:id="@+id/btn_ubi"
@@ -92,6 +90,7 @@
             android:layout_marginTop="15dp"
             android:layout_weight="0.5"
             android:gravity="center"
+            android:maxLength="7"
             android:hint="@string/codigo"
             android:textStyle="italic"
             android:inputType="number"
@@ -117,9 +116,39 @@
         android:layout_marginTop="15dp"
         android:gravity="center"
         android:textStyle="bold"
-        android:text="resultado"
+        android:text="-"
         app:layout_constraintTop_toBottomOf="@id/filita"
         tools:layout_editor_absoluteX="167dp"
         tools:layout_editor_absoluteY="342dp" />
+
+    <TableRow
+        android:id="@+id/filita2"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/result1">
+
+        <Button
+            android:id="@+id/btnNuevaUbi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="@string/nueva_ubicacion"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/btnDespachar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="@string/despachar"
+            android:textSize="25sp" />
+    </TableRow>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

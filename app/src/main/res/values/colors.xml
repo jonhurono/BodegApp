@@ -13,6 +13,7 @@
     <color name="rojoFuerte">#E12A13</color>
     <color name="naranjo">#FB8E00</color>
     <color name="blanco">#F0EFEF</color>
+    <color name="gray">#A9A9A9</color>
 
     <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
 

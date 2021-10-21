@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/pop_bg"
+    tools:context=".NuevaUbiPop">
+
+    <TableLayout
+        android:id="@+id/tablita"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="75dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:weightSum="1"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="35sp"
+                android:layout_marginStart="30dp"
+                android:text="@string/bodega"
+                android:layout_weight="0.5"/>
+
+            <Spinner
+                android:id="@+id/spinnerBod"
+                android:layout_weight="0.5"
+                android:layout_marginEnd="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_marginStart="30dp"
+                android:textSize="35sp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/rack"
+                android:layout_weight="0.5"/>
+
+            <Spinner
+                android:id="@+id/spinnerRack"
+                android:layout_marginEnd="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_marginStart="30dp"
+                android:textSize="35sp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/altura"
+                android:layout_weight="0.5"/>
+
+            <Spinner
+                android:id="@+id/spinnerAlt"
+                android:layout_marginEnd="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_marginStart="30dp"
+                android:textSize="35sp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/profundidad"
+                android:layout_weight="0.5"/>
+
+            <Spinner
+                android:id="@+id/spinnerProf"
+                android:layout_marginEnd="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/btnUpdate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tablita"
+        android:layout_marginTop="30dp"
+        android:textSize="40sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ingresar" />
+</androidx.constraintlayout.widget.ConstraintLayout>
