@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -20,8 +22,11 @@ import java.util.ArrayList;
 
 public class NuevaUbiPop extends Activity {
 
-    Spinner bodegas, racks, alturas, profundidades;
+    EditText        inputUbi;
+    Button          btnVerificar, btnUpdate;
+    Spinner         bodegas, racks, alturas, profundidades;
     private boolean success = false; // boolean
+
     //private MyAppAdapter    myAppAdapter;
 
     @Override
@@ -29,10 +34,13 @@ public class NuevaUbiPop extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevaubi_pop);
 
+        inputUbi        =   (EditText) findViewById(R.id.inputUbi);
+        btnVerificar    =   (Button) findViewById(R.id.btnVerificar);
         bodegas         =   (Spinner) findViewById(R.id.spinnerBod);
         racks           =   (Spinner) findViewById(R.id.spinnerRack);
         alturas         =   (Spinner) findViewById(R.id.spinnerAlt);
         profundidades   =   (Spinner) findViewById(R.id.spinnerProf);
+        btnUpdate       =   (Button) findViewById(R.id.btnUpdate);
 
         GetBodegas();
         
@@ -50,6 +58,13 @@ public class NuevaUbiPop extends Activity {
         params.y = 0;
 
         getWindow().setAttributes(params);
+
+        btnVerificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetInfoUbi();
+            }
+        });
 
         bodegas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -86,15 +101,40 @@ public class NuevaUbiPop extends Activity {
 
             }
         });
-        
 
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+    }
+
+    public void GetInfoUbi(){
+        try {
+            Statement stm = conexionDB().createStatement();
+            ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '6', " +
+                    "@CodUbi = '" + inputUbi.getText().toString() + "' ");
+
+            if (rs.next()) // if resultset not null, I add items to itemArraylist using class created
+            {
+
+            } else {
+                Toast.makeText(getApplicationContext(), "ERROR EN LA CONSULTA DE UBICACIÓN", Toast.LENGTH_SHORT).show();
+                success = false;
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void GetBodegas(){
         try {
             Statement stm = conexionDB().createStatement();
             ResultSet rs = stm.executeQuery("SELECT DISTINCT Bodega " +
-                    "FROM Bdg_Bodega " +
+                    "FROM Bdg_Ubicacion " +
                     "ORDER BY Bodega ASC ");
 
             if (rs != null) // if resultset not null, I add items to itemArraylist using class created
@@ -105,7 +145,8 @@ public class NuevaUbiPop extends Activity {
                     data.add(bodega);
                 }
 
-                ArrayAdapter array = new ArrayAdapter(this, R.layout.spinnerlayout,data);
+                ArrayAdapter array = new ArrayAdapter(this, R.layout.spinner_item2,data);
+                array.setDropDownViewResource(R.layout.spinner_dropdown_item);
                 bodegas.setAdapter (array);
                 success = true;
 
@@ -136,7 +177,8 @@ public class NuevaUbiPop extends Activity {
                     data.add(rack);
                 }
 
-                ArrayAdapter array = new ArrayAdapter(this, R.layout.spinnerlayout,data);
+                ArrayAdapter array = new ArrayAdapter(this, R.layout.spinner_item2,data);
+                array.setDropDownViewResource(R.layout.spinner_dropdown_item);
                 racks.setAdapter (array);
                 success = true;
 
@@ -167,7 +209,8 @@ public class NuevaUbiPop extends Activity {
                     data.add(altura);
                 }
 
-                ArrayAdapter array = new ArrayAdapter(this, R.layout.spinnerlayout,data);
+                ArrayAdapter array = new ArrayAdapter(this, R.layout.spinner_item2,data);
+                array.setDropDownViewResource(R.layout.spinner_dropdown_item);
                 alturas.setAdapter (array);
                 success = true;
 
@@ -199,7 +242,8 @@ public class NuevaUbiPop extends Activity {
                     data.add(profundidad);
                 }
 
-                ArrayAdapter array = new ArrayAdapter(this, R.layout.spinnerlayout,data);
+                ArrayAdapter array = new ArrayAdapter(this, R.layout.spinner_item2,data);
+                array.setDropDownViewResource(R.layout.spinner_dropdown_item);
                 profundidades.setAdapter (array);
                 success = true;
 
@@ -213,6 +257,8 @@ public class NuevaUbiPop extends Activity {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     public Connection conexionDB(){
         Connection conexion=null;

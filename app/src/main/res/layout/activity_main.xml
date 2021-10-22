@@ -147,7 +147,7 @@
             android:layout_marginEnd="20dp"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:text="@string/despachar"
+            android:text="@string/suelo"
             android:textSize="25sp" />
     </TableRow>
 

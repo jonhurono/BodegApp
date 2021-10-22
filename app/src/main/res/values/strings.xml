@@ -13,6 +13,7 @@
     <string name="altura">Altura</string>
     <string name="rack">Rack</string>
     <string name="bodega">Bodega</string>
+    <string name="suelo">Suelo</string>
     <string-array name="modos">
         <item>"UBICACIÓN"</item>
         <item>"DETALLE"</item>
