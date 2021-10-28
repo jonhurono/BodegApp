@@ -151,4 +151,26 @@
             android:textSize="25sp" />
     </TableRow>
 
+    <TextView
+        android:id="@+id/numPalet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filita2"
+        app:layout_constraintEnd_toStartOf="@id/codUbi"
+        android:text="-"
+        tools:layout_editor_absoluteX="81dp"
+        tools:layout_editor_absoluteY="473dp" />
+
+    <TextView
+        android:id="@+id/codUbi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/numPalet"
+        app:layout_constraintTop_toBottomOf="@id/filita2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="-"
+        tools:layout_editor_absoluteX="81dp"
+        tools:layout_editor_absoluteY="473dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -159,4 +159,41 @@
         android:layout_height="wrap_content"
         android:text="@string/ingresar" />
 
+    <TableRow
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnUpdate"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/bd_bod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_weight="0.25"/>
+
+        <TextView
+            android:id="@+id/bd_rack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_weight="0.25"/>
+
+        <TextView
+            android:id="@+id/bd_altura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_weight="0.25"/>
+
+        <TextView
+            android:id="@+id/bd_prof"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_weight="0.25"/>
+    </TableRow>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

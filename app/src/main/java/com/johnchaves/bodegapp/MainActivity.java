@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     EditText    inputCod;
     Button      btnSubmit, btnNuevaUbi, btnDespacho;
     TextView    result1;
+    private static  TextView NumPalet, CodUbi;
     TableRow    filita2;
 
     @Override
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         filita2     = (TableRow) findViewById(R.id.filita2);
         btnNuevaUbi = (Button) findViewById(R.id.btnNuevaUbi);
         btnDespacho = (Button) findViewById(R.id.btnDespachar);
+        NumPalet    = (TextView) findViewById(R.id.numPalet);
+        CodUbi      = (TextView) findViewById(R.id.codUbi);
         Modo.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
         ArrayAdapter aa = new ArrayAdapter(this, R.layout.spinner_item,modos);
         aa.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -118,6 +121,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 startActivity(i);
             }
         });
+
+        btnDespacho.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quitarUbi();
+            }
+        });
     }
 
     @Override
@@ -135,6 +145,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    public static TextView getNumPalet(){ return NumPalet; }
+    public static TextView getCodUbi(){ return CodUbi; }
 
 
     @Override
@@ -149,7 +161,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             StrictMode.setThreadPolicy(policy);
 
             Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-            conexion= DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.0.11;databaseName=Bodega;user=Movil;password=Mv2021;");
+            conexion= DriverManager.getConnection("jdbc:jtds:sqlserver://172.16.15.61;databaseName=Bodega;user=sa;password=avanW3lc01;");
+            //conexion= DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.0.11;databaseName=Bodega;user=Movil;password=Mv2021;");
 
         }catch(Exception e){
             Toast toast = Toast.makeText(getApplicationContext(),"SIN CONEXIÓN A BASE DE DATOS",Toast.LENGTH_SHORT);
@@ -195,6 +208,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (rs.next()) {
                     result1.setText(rs.getString(1));
+                    CodUbi.setText(rs.getString(2));
+                    NumPalet.setText(rs.getString(3));
                     filita2.setVisibility(View.VISIBLE);
                 } else {
                     result1.setText(null);
@@ -236,5 +251,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             inputCod.setText("");
             inputCod.requestFocus();
         }
+    }
+
+    public void quitarUbi(){
+        try {
+            Statement pst = conexionDB().createStatement();
+
+            int rs = pst.executeUpdate("EXEC Sp_VaciaUbicacion_salida" +
+                    " @UBICACION = '"+CodUbi.getText()+"' ");
+
+            Toast.makeText(getApplicationContext(),"SE HA QUITADO UBICACION A PALLET", Toast.LENGTH_LONG).show();
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        result1.setText(null);
+        inputCod.setText(null);
+        inputCod.requestFocus();
     }
 }

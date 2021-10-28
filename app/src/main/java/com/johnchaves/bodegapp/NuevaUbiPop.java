@@ -3,8 +3,12 @@ package com.johnchaves.bodegapp;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.renderscript.Sampler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -12,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Connection;
@@ -26,6 +31,9 @@ public class NuevaUbiPop extends Activity {
     Button          btnVerificar, btnUpdate;
     Spinner         bodegas, racks, alturas, profundidades;
     private boolean success = false; // boolean
+    TextView        bd_bodega, bd_rack, bd_altura, bd_prof;
+    TextView        NumPalet = MainActivity.getNumPalet();
+    TextView        CodUbi = MainActivity.getCodUbi();
 
     //private MyAppAdapter    myAppAdapter;
 
@@ -41,9 +49,16 @@ public class NuevaUbiPop extends Activity {
         alturas         =   (Spinner) findViewById(R.id.spinnerAlt);
         profundidades   =   (Spinner) findViewById(R.id.spinnerProf);
         btnUpdate       =   (Button) findViewById(R.id.btnUpdate);
+        bd_bodega       =   (TextView) findViewById(R.id.bd_bod);
+        bd_rack         =   (TextView) findViewById(R.id.bd_rack);
+        bd_altura       =   (TextView) findViewById(R.id.bd_altura);
+        bd_prof         =   (TextView) findViewById(R.id.bd_prof);
 
         GetBodegas();
-        
+        /*GetRacks();
+        GetAlturas();
+        GetProfundidades();*/
+
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
@@ -59,10 +74,72 @@ public class NuevaUbiPop extends Activity {
 
         getWindow().setAttributes(params);
 
+        inputUbi.requestFocus();
+
         btnVerificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GetInfoUbi();
+                inputUbi.requestFocus();
+            }
+
+        });
+
+        inputUbi.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(s.toString().length()>0){
+                    bodegas.setEnabled(false);
+                    racks.setEnabled(false);
+                    alturas.setEnabled(false);
+                    profundidades.setEnabled(false);
+
+                    bd_bodega.setText(null);
+                    bd_rack.setText(null);
+                    bd_altura.setText(null);
+                    bd_prof.setText(null);
+
+                } else {
+                    bodegas.setEnabled(true);
+                    racks.setEnabled(true);
+                    alturas.setEnabled(true);
+                    profundidades.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // DO_NOTHING();
+            }
+        });
+
+        inputUbi.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == inputUbi.getImeActionId()){
+                    if (inputUbi.length() > 0){
+                        bd_bodega.setText(null);
+                        bd_rack.setText(null);
+                        bd_altura.setText(null);
+                        bd_prof.setText(null);
+                        btnVerificar.callOnClick();
+                        //GetInfoUbi();
+                        inputUbi.requestFocus();
+                    }
+                    else{
+                        inputUbi.requestFocus();
+                    }
+                    inputUbi.requestFocus();
+                    //handled = true;
+                }
+                return handled;
             }
         });
 
@@ -70,6 +147,7 @@ public class NuevaUbiPop extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 GetRacks();
+                bd_bodega.setText(bodegas.getSelectedItem().toString());
             }
 
             @Override
@@ -82,6 +160,7 @@ public class NuevaUbiPop extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 GetAlturas();
+                bd_rack.setText(racks.getSelectedItem().toString());
             }
 
             @Override
@@ -94,6 +173,20 @@ public class NuevaUbiPop extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 GetProfundidades();
+                bd_altura.setText(alturas.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        profundidades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                bd_prof.setText(profundidades.getSelectedItem().toString());
+
             }
 
             @Override
@@ -105,37 +198,105 @@ public class NuevaUbiPop extends Activity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                asignarUbi();
             }
         });
 
     }
 
-    public void GetInfoUbi(){
+    private void asignarUbi() {
         try {
-            Statement stm = conexionDB().createStatement();
-            ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '6', " +
-                    "@CodUbi = '" + inputUbi.getText().toString() + "' ");
+            Statement pst = conexionDB().createStatement();
 
-            if (rs.next()) // if resultset not null, I add items to itemArraylist using class created
-            {
+            int rs = pst.executeUpdate("EXEC SP_U_MOV_PALLET " +
+                    " @NUMPALET = '"+NumPalet.getText().toString()+"' , " +
+                    " @UBICACION = '"+(bd_bodega.getText().toString()+bd_rack.getText().toString()+
+                                        bd_altura.getText().toString()+bd_prof.getText().toString())+"' ");
 
-            } else {
-                Toast.makeText(getApplicationContext(), "ERROR EN LA CONSULTA DE UBICACIÓN", Toast.LENGTH_SHORT).show();
-                success = false;
-            }
+            Toast.makeText(getApplicationContext(),"NUEVA UBICACIÓN ASIGNADA CORRECTAMENTE", Toast.LENGTH_LONG).show();
+
+            NumPalet.setText(null);
+            CodUbi.setText(null);
+
+            finish();
 
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    public void GetInfoUbi(){
+
+        if (inputUbi.toString().length() > 0){
+            try {
+                Statement stm = conexionDB().createStatement();
+            /*ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '7', " +
+                    "@CodUbi = '" + inputUbi.getText().toString() + "' ");*/
+
+                ResultSet rs = stm.executeQuery("EXEC Sp_c_Ubicacion @Modo = 'E', " +
+                        "@Ubicacion = '" + inputUbi.getText().toString() + "' ");
+
+                if (rs.next())
+                {
+                    Toast.makeText(getApplicationContext(),"UBICACIÓN YA OCUPADA", Toast.LENGTH_LONG).show();
+                }
+
+                else {
+
+                    asignarUbi();
+                    //insertUbi();
+                    Toast.makeText(getApplicationContext(), "UBICACIÓN ASIGNADA", Toast.LENGTH_SHORT).show();
+                    success = false;
+
+                }
+
+                inputUbi.setText(null);
+                inputUbi.requestFocus();
+
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        else{
+            try {
+                Statement stm = conexionDB().createStatement();
+            /*ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '7', " +
+                    "@CodUbi = '" + inputUbi.getText().toString() + "' ");*/
+
+                ResultSet rs = stm.executeQuery("EXEC Sp_c_Ubicacion @Modo = 'E', " +
+                        "@Ubicacion = '" + bodegas.getSelectedItem().toString()+racks.getSelectedItem().toString()+
+                        alturas.getSelectedItem().toString()+profundidades.getSelectedItem().toString()+ "' ");
+
+                if (rs.next())
+                {
+                    Toast.makeText(getApplicationContext(),"UBICACIÓN YA OCUPADA", Toast.LENGTH_LONG).show();
+                }
+
+                else {
+
+                    asignarUbi();
+                    //insertUbi();
+                    Toast.makeText(getApplicationContext(), "UBICACIÓN CREADA Y/O DISPONIBLE", Toast.LENGTH_SHORT).show();
+                    success = false;
+
+                }
+
+                inputUbi.requestFocus();
+
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        inputUbi.requestFocus();
     }
 
     public void GetBodegas(){
         try {
             Statement stm = conexionDB().createStatement();
             ResultSet rs = stm.executeQuery("SELECT DISTINCT Bodega " +
-                    "FROM Bdg_Ubicacion " +
-                    "ORDER BY Bodega ASC ");
+                    "FROM Bdg_Bodega ");
 
             if (rs != null) // if resultset not null, I add items to itemArraylist using class created
             {
@@ -154,8 +315,7 @@ public class NuevaUbiPop extends Activity {
                 Toast.makeText(getApplicationContext(), "ERROR EN LA CONSULTA A BODEGAS", Toast.LENGTH_SHORT).show();
                 success = false;
             }
-            //myAppAdapter = new MyAppAdapter(itemArrayList, MainActivity.this);
-            //recyclerView.setAdapter(myAppAdapter);
+
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -164,6 +324,10 @@ public class NuevaUbiPop extends Activity {
     public void GetRacks(){
         try {
             Statement stm = conexionDB().createStatement();
+
+            /*ResultSet rs = stm.executeQuery("SELECT DISTINCT Rack " +
+                    "FROM bdg_Rack ");*/
+
             ResultSet rs = stm.executeQuery("SELECT DISTINCT Rack " +
                     "FROM bdg_ubicacion " +
                     "WHERE Bodega = '"+bodegas.getSelectedItem().toString()+"' " +
@@ -186,8 +350,7 @@ public class NuevaUbiPop extends Activity {
                 Toast.makeText(getApplicationContext(), "ERROR EN LA CONSULTA A BODEGAS", Toast.LENGTH_SHORT).show();
                 success = false;
             }
-            //myAppAdapter = new MyAppAdapter(itemArrayList, MainActivity.this);
-            //recyclerView.setAdapter(myAppAdapter);
+
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -196,12 +359,16 @@ public class NuevaUbiPop extends Activity {
     public void GetAlturas(){
         try {
             Statement stm = conexionDB().createStatement();
+
+            /*ResultSet rs = stm.executeQuery("SELECT DISTINCT Altura " +
+                    "FROM bdg_Altura ");*/
+
             ResultSet rs = stm.executeQuery("SELECT DISTINCT Altura " +
                     "FROM bdg_ubicacion " +
                     "WHERE Bodega = '"+bodegas.getSelectedItem().toString()+"' " +
                     "AND Rack = '"+racks.getSelectedItem().toString()+"' ");
 
-            if (rs != null) // if resultset not null, I add items to itemArraylist using class created
+            if (rs != null)
             {
                 ArrayList<String> data = new ArrayList<String>();
                 while (rs.next()) {
@@ -218,8 +385,7 @@ public class NuevaUbiPop extends Activity {
                 Toast.makeText(getApplicationContext(), "ERROR EN LA CONSULTA A BODEGAS", Toast.LENGTH_SHORT).show();
                 success = false;
             }
-            //myAppAdapter = new MyAppAdapter(itemArrayList, MainActivity.this);
-            //recyclerView.setAdapter(myAppAdapter);
+
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -228,13 +394,16 @@ public class NuevaUbiPop extends Activity {
     public void GetProfundidades(){
         try {
             Statement stm = conexionDB().createStatement();
+
+            /*ResultSet rs = stm.executeQuery("SELECT DISTINCT Profundidad " +
+                    "FROM Bdg_Profundidad ");*/
             ResultSet rs = stm.executeQuery("SELECT DISTINCT Profundidad " +
                     "FROM bdg_ubicacion " +
                     "WHERE Bodega = '"+bodegas.getSelectedItem().toString()+"' " +
                     "AND Rack = '"+racks.getSelectedItem().toString()+"' " +
                     "AND Altura = '"+alturas.getSelectedItem().toString()+"' ");
 
-            if (rs != null) // if resultset not null, I add items to itemArraylist using class created
+            if (rs != null)
             {
                 ArrayList<String> data = new ArrayList<String>();
                 while (rs.next()) {
@@ -251,14 +420,55 @@ public class NuevaUbiPop extends Activity {
                 Toast.makeText(getApplicationContext(), "ERROR EN LA CONSULTA", Toast.LENGTH_SHORT).show();
                 success = false;
             }
-            //myAppAdapter = new MyAppAdapter(itemArrayList, MainActivity.this);
-            //recyclerView.setAdapter(myAppAdapter);
+
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
+    public void insertUbi(){
 
+        if (inputUbi.toString().length() > 0){
+
+            try {
+                Statement pst = conexionDB().createStatement();
+
+                int rs = pst.executeUpdate("EXEC Sp_i_Ubicacion" +
+                        " @Ubicacion = '"+bd_bodega.getText()+bd_rack.getText()+
+                        bd_altura.getText()+bd_prof.getText()+"'," +
+                        " @Bodega = '"+bd_bodega.getText()+"'," +
+                        " @Rack = '"+bd_rack.getText()+"'," +
+                        " @Altura = '"+bd_altura.getText()+"'," +
+                        " @Profundidad = '"+bd_prof.getText()+"' ");
+
+                Toast.makeText(getApplicationContext(),"NUEVA UBICACIÓN CREADA CORRECTAMENTE", Toast.LENGTH_LONG).show();
+
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+        else {
+
+            try {
+                Statement pst = conexionDB().createStatement();
+
+                int rs = pst.executeUpdate("EXEC Sp_i_Ubicacion" +
+                        " @Ubicacion = '"+bd_bodega.getText()+bd_rack.getText()+
+                        bd_altura.getText()+bd_prof.getText()+"'," +
+                        " @Bodega = '"+bd_bodega.getText()+"'," +
+                        " @Rack = '"+bd_rack.getText()+"'," +
+                        " @Altura = '"+bd_altura.getText()+"'," +
+                        " @Profundidad = '"+bd_prof.getText()+"' ");
+
+                Toast.makeText(getApplicationContext(),"NUEVA UBICACIÓN CREADA CORRECTAMENTE", Toast.LENGTH_LONG).show();
+
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     public Connection conexionDB(){
         Connection conexion=null;
@@ -267,7 +477,8 @@ public class NuevaUbiPop extends Activity {
             StrictMode.setThreadPolicy(policy);
 
             Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-            conexion= DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.0.11;databaseName=Bodega;user=Movil;password=Mv2021;");
+            //conexion= DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.0.11;databaseName=Bodega;user=Movil;password=Mv2021;");
+            conexion= DriverManager.getConnection("jdbc:jtds:sqlserver://172.16.15.61;databaseName=Bodega;user=sa;password=avanW3lc01;");
 
         }catch(Exception e){
             Toast toast = Toast.makeText(getApplicationContext(),"SIN CONEXIÓN A BASE DE DATOS",Toast.LENGTH_LONG);
@@ -276,5 +487,4 @@ public class NuevaUbiPop extends Activity {
         }
         return conexion;
     }
-
 }
