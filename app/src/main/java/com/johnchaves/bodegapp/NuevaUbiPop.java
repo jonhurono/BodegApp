@@ -218,6 +218,7 @@ public class NuevaUbiPop extends Activity {
             NumPalet.setText(null);
             CodUbi.setText(null);
 
+
             finish();
 
         } catch (Exception e) {
@@ -298,7 +299,7 @@ public class NuevaUbiPop extends Activity {
             ResultSet rs = stm.executeQuery("SELECT DISTINCT Bodega " +
                     "FROM Bdg_Bodega ");
 
-            if (rs != null) // if resultset not null, I add items to itemArraylist using class created
+            if (rs != null)
             {
                 ArrayList<String> data = new ArrayList<String>();
                 while (rs.next()) {
@@ -333,7 +334,7 @@ public class NuevaUbiPop extends Activity {
                     "WHERE Bodega = '"+bodegas.getSelectedItem().toString()+"' " +
                     "ORDER BY Rack ASC");
 
-            if (rs != null) // if resultset not null, I add items to itemArraylist using class created
+            if (rs != null)
             {
                 ArrayList<String> data = new ArrayList<String>();
                 while (rs.next()) {

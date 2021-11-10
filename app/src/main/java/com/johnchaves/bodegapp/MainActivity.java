@@ -30,15 +30,16 @@ import java.sql.Statement;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    String [] modos = {"UBICACIÓN","DETALLE"};
+    String []   modos = {"SERIAL","PALLET","UBICACIÓN","PRODUCTO"};
     Spinner     Modo;
-    RadioGroup  radioGroup;
-    RadioButton btnPallet, btnSerial, btnProducto, btnUbic;
+    //RadioGroup  radioGroup;
+    //RadioButton btnPallet, btnSerial, btnProducto, btnUbic;
     EditText    inputCod;
-    Button      btnSubmit, btnNuevaUbi, btnDespacho;
+    Button      btnSubmit, btnDetalles, btnNuevaUbi, btnDespacho;
     TextView    result1;
-    private static  TextView NumPalet, CodUbi;
     TableRow    filita2;
+    private static  TextView NumPalet, CodUbi;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +47,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         Modo        = (Spinner) findViewById(R.id.Modo);
-        radioGroup  = (RadioGroup) findViewById(R.id.radioGroup);
-        btnPallet   = (RadioButton) findViewById(R.id.btn_pallet);
-        btnSerial   = (RadioButton) findViewById(R.id.btn_serial);
-        btnProducto = (RadioButton) findViewById(R.id.btn_prod);
-        btnUbic     = (RadioButton) findViewById(R.id.btn_ubi);
+        //radioGroup  = (RadioGroup) findViewById(R.id.radioGroup);
+        //btnPallet   = (RadioButton) findViewById(R.id.btn_pallet);
+        //btnSerial   = (RadioButton) findViewById(R.id.btn_serial);
+        //btnProducto = (RadioButton) findViewById(R.id.btn_prod);
+        //btnUbic     = (RadioButton) findViewById(R.id.btn_ubi);
         inputCod    = (EditText) findViewById(R.id.inputCod);
         btnSubmit   = (Button) findViewById(R.id.button);
         result1     = (TextView) findViewById(R.id.result1);
         filita2     = (TableRow) findViewById(R.id.filita2);
+        btnDetalles = (Button) findViewById(R.id.btnDetalles);
         btnNuevaUbi = (Button) findViewById(R.id.btnNuevaUbi);
         btnDespacho = (Button) findViewById(R.id.btnDespachar);
         NumPalet    = (TextView) findViewById(R.id.numPalet);
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), NuevaUbiPop.class);
                 startActivity(i);
+                result1.setText(null);
             }
         });
 
@@ -135,13 +138,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         String mode = parent.getSelectedItem().toString();
 
         if(mode.equals("UBICACIÓN")){
-            btnUbic.setVisibility(View.GONE);
-            btnProducto.setVisibility(View.VISIBLE);
+            //btnUbic.setVisibility(View.GONE);
+            //btnProducto.setVisibility(View.VISIBLE);
 
         }
         if(mode.equals("DETALLE")){
-            btnProducto.setVisibility(View.GONE);
-            btnUbic.setVisibility(View.VISIBLE);
+            //btnProducto.setVisibility(View.GONE);
+            //btnUbic.setVisibility(View.VISIBLE);
         }
     }
 
@@ -174,46 +177,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void buscarInfo() {
 
-        if (btnPallet.isChecked()) {
+        if (Modo.getSelectedItem().equals("SERIAL")){
             try {
                 Statement stm = conexionDB().createStatement();
                 ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '1', " +
-                        "@NumPalet = '" + inputCod.getText().toString() + "' ");
-
-                if (rs.next()) {
-                    result1.setText(rs.getString(1));
-                    filita2.setVisibility(View.VISIBLE);
-                } else {
-                    result1.setText(null);
-                    Toast toast = Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER,250,0);
-                    toast.show();
-                    filita2.setVisibility(View.INVISIBLE);
-                }
-                inputCod.setText("");
-                inputCod.requestFocus();
-
-            } catch (Exception e) {
-                //Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
-                filita2.setVisibility(View.INVISIBLE);
-            }
-            inputCod.setText("");
-            inputCod.requestFocus();
-       ; }
-        else if(btnSerial.isChecked()){
-            try {
-                Statement stm = conexionDB().createStatement();
-                ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '2', " +
                         "@CodSerial = '" + inputCod.getText().toString() + "' ");
 
                 if (rs.next()) {
                     result1.setText(rs.getString(1));
                     CodUbi.setText(rs.getString(2));
                     NumPalet.setText(rs.getString(3));
+                    btnDetalles.setVisibility(View.VISIBLE);
                     filita2.setVisibility(View.VISIBLE);
                 } else {
                     result1.setText(null);
                     Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_LONG).show();
+                    btnDetalles.setVisibility(View.INVISIBLE);
                     filita2.setVisibility(View.INVISIBLE);
 
                 }
@@ -222,12 +201,44 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             } catch (Exception e) {
                 //Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                btnDetalles.setVisibility(View.INVISIBLE);
                 filita2.setVisibility(View.INVISIBLE);
             }
             inputCod.setText("");
             inputCod.requestFocus();
         }
-        else if(btnProducto.isChecked()){
+
+        else if(Modo.getSelectedItem().equals("PALLET")) {
+            try {
+                Statement stm = conexionDB().createStatement();
+                ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '2', " +
+                        "@NumPalet = '" + inputCod.getText().toString() + "' ");
+
+                if (rs.next()) {
+                    result1.setText(rs.getString(1));
+                    btnDetalles.setVisibility(View.VISIBLE);
+                    filita2.setVisibility(View.VISIBLE);
+                } else {
+                    result1.setText(null);
+                    Toast toast = Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER,250,0);
+                    toast.show();
+                    btnDetalles.setVisibility(View.INVISIBLE);
+                    filita2.setVisibility(View.INVISIBLE);
+                }
+                inputCod.setText("");
+                inputCod.requestFocus();
+
+            } catch (Exception e) {
+                //Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                btnDetalles.setVisibility(View.INVISIBLE);
+                filita2.setVisibility(View.INVISIBLE);
+            }
+            inputCod.setText("");
+            inputCod.requestFocus();
+        }
+
+        else if(Modo.getSelectedItem().equals("PRODUCTO")){
             try {
                 Statement stm = conexionDB().createStatement();
                 ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '3', " +
@@ -235,10 +246,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (rs.next()) {
                     result1.setText(rs.getString(1));
+                    btnDetalles.setVisibility(View.VISIBLE);
                     filita2.setVisibility(View.VISIBLE);
                 } else {
                     result1.setText(null);
                     Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_LONG).show();
+                    btnDetalles.setVisibility(View.INVISIBLE);
                     filita2.setVisibility(View.INVISIBLE);
                 }
                 inputCod.setText("");
@@ -246,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             } catch (Exception e) {
                 //Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                btnDetalles.setVisibility(View.INVISIBLE);
                 filita2.setVisibility(View.INVISIBLE);
             }
             inputCod.setText("");
@@ -261,6 +275,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     " @UBICACION = '"+CodUbi.getText()+"' ");
 
             Toast.makeText(getApplicationContext(),"SE HA QUITADO UBICACION A PALLET", Toast.LENGTH_LONG).show();
+            NumPalet.setText(null);
+            CodUbi.setText(null);
 
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -268,5 +284,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         result1.setText(null);
         inputCod.setText(null);
         inputCod.requestFocus();
+        NumPalet.setText(null);
+        CodUbi.setText(null);
     }
 }

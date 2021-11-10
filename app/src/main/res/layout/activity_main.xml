@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RadioGroup
+    <!-- <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Modo">
+        app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
             android:id="@+id/btn_pallet"
@@ -38,8 +38,6 @@
             android:scaleY="1.1"
             android:text="@string/pallet"
             android:textSize="30sp" />
-        <!-- android:onClick="onRadioButtonClicked"-->
-
 
         <RadioButton
             android:id="@+id/btn_serial"
@@ -71,17 +69,17 @@
             android:scaleY="1.1"
             android:text="@string/ubicacion"
             android:textSize="30sp"
-            android:visibility="invisible"
+
             tools:visibility="gone" />
 
-    </RadioGroup>
+    </RadioGroup> -->
 
     <TableRow
         android:id="@+id/filita"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/radioGroup">
+        app:layout_constraintTop_toBottomOf="@id/Modo">
 
         <EditText
             android:id="@+id/inputCod"
@@ -121,12 +119,22 @@
         tools:layout_editor_absoluteX="167dp"
         tools:layout_editor_absoluteY="342dp" />
 
+    <Button
+        android:id="@+id/btnDetalles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/result1"
+        android:text="MÁS DETALLES"
+        android:visibility="invisible"  />
+
     <TableRow
         android:id="@+id/filita2"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@id/result1">
+        app:layout_constraintTop_toBottomOf="@id/btnDetalles">
 
         <Button
             android:id="@+id/btnNuevaUbi"
