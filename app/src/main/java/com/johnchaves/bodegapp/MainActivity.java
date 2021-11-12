@@ -186,11 +186,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (rs.next()) {
                     result1.setText(rs.getString(1));
                     CodUbi.setText(rs.getString(2));
-                    NumPalet.setText(rs.getString(3));
+                    NumPalet.setText(rs.getString(8));
                     btnDetalles.setVisibility(View.VISIBLE);
                     filita2.setVisibility(View.VISIBLE);
                 } else {
-                    result1.setText(null);
+                    //result1.setText(null);
+                    result1.setText("CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA");
                     Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_LONG).show();
                     btnDetalles.setVisibility(View.INVISIBLE);
                     filita2.setVisibility(View.INVISIBLE);
@@ -219,7 +220,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     btnDetalles.setVisibility(View.VISIBLE);
                     filita2.setVisibility(View.VISIBLE);
                 } else {
-                    result1.setText(null);
+                    //result1.setText(null);
+                    result1.setText("CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA");
                     Toast toast = Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER,250,0);
                     toast.show();
@@ -249,7 +251,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     btnDetalles.setVisibility(View.VISIBLE);
                     filita2.setVisibility(View.VISIBLE);
                 } else {
-                    result1.setText(null);
+                    //result1.setText(null);
+                    result1.setText("CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA");
+                    Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_LONG).show();
+                    btnDetalles.setVisibility(View.INVISIBLE);
+                    filita2.setVisibility(View.INVISIBLE);
+                }
+                inputCod.setText("");
+                inputCod.requestFocus();
+
+            } catch (Exception e) {
+                //Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                btnDetalles.setVisibility(View.INVISIBLE);
+                filita2.setVisibility(View.INVISIBLE);
+            }
+            inputCod.setText("");
+            inputCod.requestFocus();
+        }
+        else if(Modo.getSelectedItem().equals("UBICACIÓN")){
+            try {
+                Statement stm = conexionDB().createStatement();
+                ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '6', " +
+                        "@CodUbi = '" + inputCod.getText().toString() + "' ");
+
+                if (rs.next()) {
+                    result1.setText(rs.getString(5)+rs.getString(6));
+                    btnDetalles.setVisibility(View.VISIBLE);
+                    filita2.setVisibility(View.VISIBLE);
+                } else {
+                    //result1.setText(null);
+                    result1.setText("CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA");
                     Toast.makeText(getApplicationContext(), "CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA", Toast.LENGTH_LONG).show();
                     btnDetalles.setVisibility(View.INVISIBLE);
                     filita2.setVisibility(View.INVISIBLE);

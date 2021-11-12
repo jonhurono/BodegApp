@@ -129,7 +129,8 @@ public class NuevaUbiPop extends Activity {
                         bd_rack.setText(null);
                         bd_altura.setText(null);
                         bd_prof.setText(null);
-                        btnVerificar.callOnClick();
+                        btnUpdate.callOnClick();
+                        //btnVerificar.callOnClick();
                         //GetInfoUbi();
                         inputUbi.requestFocus();
                     }
@@ -210,8 +211,9 @@ public class NuevaUbiPop extends Activity {
 
             int rs = pst.executeUpdate("EXEC SP_U_MOV_PALLET " +
                     " @NUMPALET = '"+NumPalet.getText().toString()+"' , " +
-                    " @UBICACION = '"+(bd_bodega.getText().toString()+bd_rack.getText().toString()+
-                                        bd_altura.getText().toString()+bd_prof.getText().toString())+"' ");
+                    " @UBICACION = '"+inputUbi.getText().toString()+"' ");
+                    /*" @UBICACION = '"+(bd_bodega.getText().toString()+bd_rack.getText().toString()+
+                                        bd_altura.getText().toString()+bd_prof.getText().toString())+"' ");*/
 
             Toast.makeText(getApplicationContext(),"NUEVA UBICACIÓN ASIGNADA CORRECTAMENTE", Toast.LENGTH_LONG).show();
 
@@ -229,7 +231,7 @@ public class NuevaUbiPop extends Activity {
 
     public void GetInfoUbi(){
 
-        if (inputUbi.toString().length() > 0){
+        //if (inputUbi.toString().length() > 0){
             try {
                 Statement stm = conexionDB().createStatement();
             /*ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '7', " +
@@ -238,7 +240,7 @@ public class NuevaUbiPop extends Activity {
                 ResultSet rs = stm.executeQuery("EXEC Sp_c_Ubicacion @Modo = 'E', " +
                         "@Ubicacion = '" + inputUbi.getText().toString() + "' ");
 
-                if (rs.next())
+                if (rs.getString(6) != ("0"))
                 {
                     Toast.makeText(getApplicationContext(),"UBICACIÓN YA OCUPADA", Toast.LENGTH_LONG).show();
                 }
@@ -257,14 +259,14 @@ public class NuevaUbiPop extends Activity {
 
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+            }/*
         }
 
-        else{
+        /*else{
             try {
                 Statement stm = conexionDB().createStatement();
-            /*ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '7', " +
-                    "@CodUbi = '" + inputUbi.getText().toString() + "' ");*/
+            ResultSet rs = stm.executeQuery("EXEC Sp_c_BodegApp '7', " +
+                    "@CodUbi = '" + inputUbi.getText().toString() + "' ");
 
                 ResultSet rs = stm.executeQuery("EXEC Sp_c_Ubicacion @Modo = 'E', " +
                         "@Ubicacion = '" + bodegas.getSelectedItem().toString()+racks.getSelectedItem().toString()+
@@ -289,7 +291,7 @@ public class NuevaUbiPop extends Activity {
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        }
+        }*/
         inputUbi.requestFocus();
     }
 
