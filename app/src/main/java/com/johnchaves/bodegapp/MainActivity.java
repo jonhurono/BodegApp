@@ -276,8 +276,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (rs.next()) {
                     result1.setText(rs.getString(5)+rs.getString(6));
-                    btnDetalles.setVisibility(View.VISIBLE);
-                    filita2.setVisibility(View.VISIBLE);
+                    btnDetalles.setVisibility(View.INVISIBLE);
+                    filita2.setVisibility(View.INVISIBLE);
                 } else {
                     //result1.setText(null);
                     result1.setText("CÓDIGO INVÁLIDO O INEXISTENTE EN BODEGA");

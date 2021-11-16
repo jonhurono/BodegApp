@@ -16,6 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,8 @@ public class NuevaUbiPop extends Activity {
 
     EditText        inputUbi;
     Button          btnVerificar, btnUpdate;
+    Switch          switchi;
+    TableLayout     tablita;
     Spinner         bodegas, racks, alturas, profundidades;
     private boolean success = false; // boolean
     TextView        bd_bodega, bd_rack, bd_altura, bd_prof;
@@ -44,6 +48,8 @@ public class NuevaUbiPop extends Activity {
 
         inputUbi        =   (EditText) findViewById(R.id.inputUbi);
         btnVerificar    =   (Button) findViewById(R.id.btnVerificar);
+        switchi         =   (Switch) findViewById(R.id.switchi);
+        tablita         =   (TableLayout) findViewById(R.id.tablita);
         bodegas         =   (Spinner) findViewById(R.id.spinnerBod);
         racks           =   (Spinner) findViewById(R.id.spinnerRack);
         alturas         =   (Spinner) findViewById(R.id.spinnerAlt);
@@ -76,13 +82,15 @@ public class NuevaUbiPop extends Activity {
 
         inputUbi.requestFocus();
 
+        tablita.setVisibility(View.INVISIBLE);
+        btnUpdate.setVisibility(View.INVISIBLE);
+
         btnVerificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GetInfoUbi();
                 inputUbi.requestFocus();
             }
-
         });
 
         inputUbi.addTextChangedListener(new TextWatcher() {
@@ -144,10 +152,18 @@ public class NuevaUbiPop extends Activity {
             }
         });
 
+        /*bodegas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetBodegas();
+            }
+        });*/
+
         bodegas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 GetRacks();
+                //racks.performClick();
                 bd_bodega.setText(bodegas.getSelectedItem().toString());
             }
 
@@ -489,5 +505,23 @@ public class NuevaUbiPop extends Activity {
             toast.show();
         }
         return conexion;
+    }
+
+    public void cambiarUI(View view) {
+        if (switchi.isChecked()) {
+            inputUbi.setVisibility(View.INVISIBLE);
+            btnVerificar.setVisibility(View.INVISIBLE);
+
+            tablita.setVisibility(View.VISIBLE);
+            btnUpdate.setVisibility(View.VISIBLE);
+
+        }else{
+
+            inputUbi.setVisibility(View.VISIBLE);
+            btnVerificar.setVisibility(View.VISIBLE);
+
+            tablita.setVisibility(View.INVISIBLE);
+            btnUpdate.setVisibility(View.INVISIBLE);
+        }
     }
 }

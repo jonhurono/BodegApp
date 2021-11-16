@@ -34,6 +34,18 @@
         android:layout_height="wrap_content"
         android:text="✅" />
 
+    <Switch
+        android:id="@+id/switchi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selección Manual"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="cambiarUI"
+        app:layout_constraintTop_toBottomOf="@id/btnVerificar"/>
+
     <TableLayout
         android:id="@+id/tablita"
         android:layout_width="match_parent"
@@ -41,7 +53,7 @@
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputUbi"
+        app:layout_constraintTop_toBottomOf="@id/switchi"
         android:layout_marginTop="25dp"
 
 >
