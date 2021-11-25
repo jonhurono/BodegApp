@@ -137,7 +137,8 @@ public class NuevaUbiPop extends Activity {
                         bd_rack.setText(null);
                         bd_altura.setText(null);
                         bd_prof.setText(null);
-                        btnUpdate.callOnClick();
+                        GetInfoUbi();
+                        //btnUpdate.callOnClick();
                         //btnVerificar.callOnClick();
                         //GetInfoUbi();
                         inputUbi.requestFocus();
@@ -236,7 +237,6 @@ public class NuevaUbiPop extends Activity {
             NumPalet.setText(null);
             CodUbi.setText(null);
 
-
             finish();
 
         } catch (Exception e) {
@@ -256,18 +256,21 @@ public class NuevaUbiPop extends Activity {
                 ResultSet rs = stm.executeQuery("EXEC Sp_c_Ubicacion @Modo = 'E', " +
                         "@Ubicacion = '" + inputUbi.getText().toString() + "' ");
 
-                if (rs.getString(6) != ("0"))
+                if (rs.next())
                 {
-                    Toast.makeText(getApplicationContext(),"UBICACIÓN YA OCUPADA", Toast.LENGTH_LONG).show();
+                    if (rs.getInt(6) > 0){
+                        inputUbi.requestFocus();
+                        Toast.makeText(getApplicationContext(), "UBICACIÓN YA OCUPADA", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        //Toast.makeText(getApplicationContext(),"DISPONIBLE", Toast.LENGTH_SHORT).show();
+                        asignarUbi();
+                    }
                 }
 
                 else {
-
-                    asignarUbi();
-                    //insertUbi();
-                    Toast.makeText(getApplicationContext(), "UBICACIÓN ASIGNADA", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "UBICACIÓN AÚN NO CREADA", Toast.LENGTH_SHORT).show();
                     success = false;
-
                 }
 
                 inputUbi.setText(null);

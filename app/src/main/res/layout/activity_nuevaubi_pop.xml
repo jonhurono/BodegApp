@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/pop_bg"
     tools:context=".NuevaUbiPop">
@@ -176,6 +176,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnUpdate"
         android:layout_marginTop="25dp"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 

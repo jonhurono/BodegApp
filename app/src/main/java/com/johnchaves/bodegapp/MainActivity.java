@@ -131,6 +131,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 quitarUbi();
             }
         });
+
+        btnDetalles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MasDetalles.class);
+                startActivity(i);
+                result1.setText(null);
+            }
+        });
     }
 
     @Override
