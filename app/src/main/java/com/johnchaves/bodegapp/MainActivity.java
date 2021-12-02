@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     String []   modos = {"SERIAL","PALLET","UBICACIÓN","PRODUCTO"};
     Spinner     Modo;
-    //RadioGroup  radioGroup;
-    //RadioButton btnPallet, btnSerial, btnProducto, btnUbic;
+
     EditText    inputCod;
     Button      btnSubmit, btnDetalles, btnNuevaUbi, btnDespacho;
     TextView    result1;
@@ -47,11 +46,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         Modo        = (Spinner) findViewById(R.id.Modo);
-        //radioGroup  = (RadioGroup) findViewById(R.id.radioGroup);
-        //btnPallet   = (RadioButton) findViewById(R.id.btn_pallet);
-        //btnSerial   = (RadioButton) findViewById(R.id.btn_serial);
-        //btnProducto = (RadioButton) findViewById(R.id.btn_prod);
-        //btnUbic     = (RadioButton) findViewById(R.id.btn_ubi);
         inputCod    = (EditText) findViewById(R.id.inputCod);
         btnSubmit   = (Button) findViewById(R.id.button);
         result1     = (TextView) findViewById(R.id.result1);
